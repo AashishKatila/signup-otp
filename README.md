@@ -1,8 +1,25 @@
-# React + Vite
+# Introduction
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a login-signup page made using React JS, Tailwind-CSS and uses zod for validation.
 
-Currently, two official plugins are available:
+# Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clone the repository 
+
+```
+    git clone https://github.com/AashishKatila/signup-otp
+```
+
+2. Install dependencies
+
+```
+    yarn
+```
+
+3. Run the app
+
+```
+    yarn dev
+```
+
+- Open the app through your browser with http://localhost:5173/ 
