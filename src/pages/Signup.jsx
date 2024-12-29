@@ -31,17 +31,17 @@ const Signup = () => {
                 body: JSON.stringify(userDetails)
             })
 
-            console.log("Response = ", response)
+            // console.log("Response = ", response)
 
             if (!response.ok) {
                 const errorData = await response.data
-                console.log("Error: ", errorData)
+                // console.log("Error: ", errorData)
             } else {
                 const res = await response.json();
-                console.log("Success", res)
+                // console.log("Success", res)
 
                 // const { phone_number, email } = { userDetails }
-                console.log(userDetails.email, userDetails.phone_number)
+                // console.log(userDetails.email, userDetails.phone_number)
 
                 const otp_response = await fetch("https://staging.tishyandco.com.au/v1/users/send_otp/", {
                     method: "POST",
@@ -53,11 +53,11 @@ const Signup = () => {
 
                 if (!otp_response.ok) {
                     const errorData = await otp_response.data
-                    console.log("Error in sending OTP: ", errorData)
+                    // console.log("Error in sending OTP: ", errorData)
                     toast.error("Error in sending OTP")
                 } else {
                     const res = await otp_response.json();
-                    console.log("OTP has been sent successfully", res)
+                    // console.log("OTP has been sent successfully", res)
                     toast.success("OTP has been succesfully sent")
                     localStorage.setItem("email", userDetails.email)
                     navigate('/verify-otp')
@@ -155,9 +155,6 @@ const Signup = () => {
                     className="flex flex-col gap-2 font-semibold "
                 >
                     <AllInputs />
-
-
-                    {/* <div className="cursor-pointer">Already have an account?</div> */}
 
                     <button
                         className="w-full text-center bg-red-600 py-1 rounded-md text-white"

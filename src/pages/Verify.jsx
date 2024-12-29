@@ -37,14 +37,14 @@ const Verify = () => {
                 },
                 body: JSON.stringify({ email: localStorage.getItem("email"), otp: otpString })
             })
-            console.log(response)
+            // console.log(response)
             if (!response.ok) {
                 const errorData = await response.data
-                console.log("Error: ", errorData)
+                // console.log("Error: ", errorData)
                 toast.error("Invalid OTP")
             } else {
                 const res = await response.json();
-                console.log("Success", res)
+                // console.log("Success", res)
                 toast.success("OTP Verified!!!")
                 localStorage.removeItem("email")
                 navigate('/login')

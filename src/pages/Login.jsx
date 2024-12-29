@@ -1,17 +1,11 @@
-import { z } from "zod";
 import CustomInput from "../components/CustomInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// import Google from "../assets/google.png";
 import Basket from "../assets/right-side.png";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router";
-
-const schema = z.object({
-    email: z.string().email("Invalid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-});
+import { LoginSchema } from "../utils/zod";
 
 
 const Login = () => {
@@ -23,7 +17,7 @@ const Login = () => {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: zodResolver(schema),
+        resolver: zodResolver(LoginSchema),
     });
 
     const onSubmit = async (userDetails) => {
@@ -42,11 +36,11 @@ const Login = () => {
 
             if (!response.ok) {
                 const errorData = await response.data
-                console.log("Error: ", errorData)
+                // console.log("Error: ", errorData)
                 toast.error("Invalid Credentials")
             } else {
                 const res = await response.json();
-                console.log("Success", res)
+                // console.log("Success", res)
                 toast.success("Login Success")
                 localStorage.setItem("accessToken", res.data.token.access)
                 localStorage.setItem("uuid", res.data.uuid)
