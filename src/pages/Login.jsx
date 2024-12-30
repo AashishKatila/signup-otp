@@ -1,16 +1,15 @@
 import CustomInput from "../components/CustomInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router";
+import { LoginSchema } from "../utils/zod";
+import useUserAuth from "../hooks/useUserAuth";
 
 import Basket from "../assets/right-side.png";
-import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router";
-import { LoginSchema } from "../utils/zod";
 
 
 const Login = () => {
 
-    const navigate = useNavigate()
 
     const {
         register,
@@ -20,36 +19,12 @@ const Login = () => {
         resolver: zodResolver(LoginSchema),
     });
 
+    const { authenticateUser } = useUserAuth();
+
     const onSubmit = async (userDetails) => {
-        console.log(userDetails);
-        try {
+        const userDetail = { email: userDetails.email, password: userDetails.password };
+        authenticateUser("login", userDetail);
 
-            const response = await fetch("https://staging.tishyandco.com.au/v1/auth/login/", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(userDetails)
-            })
-
-            console.log("Response = ", response)
-
-            if (!response.ok) {
-                const errorData = await response.data
-                // console.log("Error: ", errorData)
-                toast.error("Invalid Credentials")
-            } else {
-                const res = await response.json();
-                // console.log("Success", res)
-                toast.success("Login Success")
-                localStorage.setItem("accessToken", res.data.token.access)
-                localStorage.setItem("uuid", res.data.uuid)
-                navigate('/dashboard')
-
-            };
-        } catch (error) {
-            console.log("Network error: ", error)
-        }
     }
 
 

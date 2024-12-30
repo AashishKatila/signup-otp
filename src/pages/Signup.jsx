@@ -2,10 +2,9 @@ import CustomInput from "../components/CustomInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupSchema } from "../utils/zod";
-import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router";
-
+import { Link } from "react-router";
 import Basket from "../assets/right-side.png";
+import useUserAuth from "../hooks/useUserAuth";
 
 
 const Signup = () => {
@@ -17,54 +16,15 @@ const Signup = () => {
         resolver: zodResolver(SignupSchema),
     });
 
-    const navigate = useNavigate()
+
+    const { authenticateUser } = useUserAuth()
 
     const onSubmit = async (userDetails) => {
-        console.log(userDetails);
+
         try {
-
-            const response = await fetch("https://staging.tishyandco.com.au/v1/users/", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(userDetails)
-            })
-
-            // console.log("Response = ", response)
-
-            if (!response.ok) {
-                const errorData = await response.data
-                // console.log("Error: ", errorData)
-            } else {
-                const res = await response.json();
-                // console.log("Success", res)
-
-                // const { phone_number, email } = { userDetails }
-                // console.log(userDetails.email, userDetails.phone_number)
-
-                const otp_response = await fetch("https://staging.tishyandco.com.au/v1/users/send_otp/", {
-                    method: "POST",
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                    body: JSON.stringify({ phone_number: userDetails.phone_number, email: userDetails.email })
-                })
-
-                if (!otp_response.ok) {
-                    const errorData = await otp_response.data
-                    // console.log("Error in sending OTP: ", errorData)
-                    toast.error("Error in sending OTP")
-                } else {
-                    const res = await otp_response.json();
-                    // console.log("OTP has been sent successfully", res)
-                    toast.success("OTP has been succesfully sent")
-                    localStorage.setItem("email", userDetails.email)
-                    navigate('/verify-otp')
-                }
-            }
+            await authenticateUser("signup", userDetails);
         } catch (error) {
-            console.log("Network error: ", error)
+            console.error("Signup error:", error);
         }
 
     };
@@ -155,7 +115,6 @@ const Signup = () => {
                     className="flex flex-col gap-2 font-semibold "
                 >
                     <AllInputs />
-
                     <button
                         className="w-full text-center bg-red-600 py-1 rounded-md text-white"
                         type="submit"
