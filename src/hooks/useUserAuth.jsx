@@ -1,11 +1,14 @@
-import React from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
+import { OtpContext } from '../context/otpContext'
 
 const useUserAuth = () => {
 
     const navigate = useNavigate()
     const URL = "https://staging.tishyandco.com.au"
+
+    const { handleInterval } = useContext(OtpContext)
 
     const handleRequest = async (endpoint, data) => {
         console.log("EndPoint = ", endpoint)
@@ -53,6 +56,7 @@ const useUserAuth = () => {
                 })
 
                 if (otpResponse) {
+                    handleInterval()
                     toast.success("OTP sent successfully")
                     localStorage.setItem("email", userDetails.email)
                     navigate('/verify-otp')

@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router'
-import { toast } from 'react-toastify'
 
 const useVerify = () => {
     const navigate = useNavigate()
