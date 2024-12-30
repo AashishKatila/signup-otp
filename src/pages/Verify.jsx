@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router';
-import { toast } from 'react-toastify';
+import useVerify from '../hooks/useVerify';
 
 const Verify = () => {
 
-    const navigate = useNavigate()
+    const { verifyOtp } = useVerify()
 
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
@@ -28,30 +27,7 @@ const Verify = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        try {
-            const otpString = otp.join("");
-            const response = await fetch("https://staging.tishyandco.com.au/v1/users/verify_email_otp/", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify({ email: localStorage.getItem("email"), otp: otpString })
-            })
-            // console.log(response)
-            if (!response.ok) {
-                const errorData = await response.data
-                // console.log("Error: ", errorData)
-                toast.error("Invalid OTP")
-            } else {
-                const res = await response.json();
-                // console.log("Success", res)
-                toast.success("OTP Verified!!!")
-                localStorage.removeItem("email")
-                navigate('/login')
-            }
-        } catch (error) {
-            console.log(`Error: `, error)
-        }
+        verifyOtp("v1/users/verify_email_otp/", otp)
     }
 
     return (
