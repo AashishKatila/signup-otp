@@ -21,8 +21,11 @@ const Signup = () => {
 
     const onSubmit = async (userDetails) => {
 
+        const formattedUserDetails = { ...userDetails, phone_number: `+614${userDetails.phone_number}` }
+        console.log("Details = ", formattedUserDetails)
+
         try {
-            await authenticateUser("signup", userDetails);
+            await authenticateUser("signup", formattedUserDetails);
         } catch (error) {
             console.error("Signup error:", error);
         }
@@ -63,11 +66,10 @@ const Signup = () => {
                 />
                 <CustomInput
                     label="Phone Number"
-                    placeholder="12345678"
+                    placeholder="12xxxxxx"
                     type="text"
                     register={register}
                     name="phone_number"
-                    prefix="+614"
                     error={errors.phone_number}
                 />
                 <CustomInput
